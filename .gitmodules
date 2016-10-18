@@ -13,6 +13,12 @@
 [submodule "externals/tremor"]
 	path = externals/tremor
 	url = https://git.xiph.org/tremor.git
+[submodule "externals/g3log"]
+	path = externals/g3log
+	url = https://github.com/gimesketvirtadieni/g3log
+[submodule "externals/conwrap"]
+	path = externals/conwrap
+	url = https://github.com/gimesketvirtadieni/conwrap
 [submodule "externals/cli"]
 	path = externals/cli
 	url = https://github.com/gimesketvirtadieni/cli

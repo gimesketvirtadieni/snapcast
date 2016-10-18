@@ -34,3 +34,6 @@ server/snapserver
 GPATH
 GRTAGS
 GTAGS
+
+.settings
+/Client-Debug/
