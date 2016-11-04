@@ -116,8 +116,10 @@ void Controller::onMessageReceived(ClientConnection* connection, const msg::Base
 		player_.reset(new AlsaPlayer(pcmDevice_, stream_.get()));
 #elif HAS_OPENSL
 		player_.reset(new OpenslPlayer(pcmDevice_, stream_.get()));
+#elif HAS_COREAUDIO
+		player_.reset(new CoreAudioPlayer(pcmDevice_, stream_.get()));
 #else
-		throw SnapException("No ALSA or OPENSL support");
+		throw SnapException("No audio player support");
 #endif
 		player_->setVolume(serverSettings_->getVolume() / 100.);
 		player_->setMute(serverSettings_->isMuted());
@@ -144,7 +146,7 @@ bool Controller::sendTimeSyncMessage(long after)
 }
 
 
-void Controller::start(const PcmDevice& pcmDevice, const std::string& host, size_t port, size_t latency)
+void Controller::start(const PcmDevice& pcmDevice, const std::string& host, size_t port, int latency)
 {
 	pcmDevice_ = pcmDevice;
 	latency_ = latency;

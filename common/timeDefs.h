@@ -21,11 +21,15 @@
 
 #include <chrono>
 #include <sys/time.h>
+#ifdef MACOS
+#include <mach/clock.h>
+#include <mach/mach.h>
+#endif
 
 namespace chronos
 {
-	typedef std::chrono::high_resolution_clock hrc;
-	typedef std::chrono::time_point<hrc> time_point_hrc;
+	typedef std::chrono::system_clock clk;
+	typedef std::chrono::time_point<clk> time_point_clk;
 	typedef std::chrono::seconds sec;
 	typedef std::chrono::milliseconds msec;
 	typedef std::chrono::microseconds usec;
@@ -48,9 +52,18 @@ namespace chronos
 
 	inline static long getTickCount()
 	{
+#ifdef MACOS
+		clock_serv_t cclock;
+		mach_timespec_t mts;
+		host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+		clock_get_time(cclock, &mts);
+		mach_port_deallocate(mach_task_self(), cclock);
+		return mts.tv_sec*1000 + mts.tv_nsec / 1000000;
+#else
 		struct timespec now;
 		clock_gettime(CLOCK_MONOTONIC, &now);
 		return now.tv_sec*1000 + now.tv_nsec / 1000000;
+#endif
 	}
 
 	template <class Rep, class Period>

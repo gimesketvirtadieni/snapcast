@@ -21,6 +21,8 @@
 
 #include "popl.hpp"
 #include "controller.h"
+#include "browseZeroConf/browsemDNS.h"
+
 #ifdef HAS_ALSA
 #include "player/alsaPlayer.h"
 #endif
@@ -79,6 +81,9 @@ PcmDevice getPcmDevice(const std::string& soundcard)
 
 int main (int argc, char **argv)
 {
+#ifdef MACOS
+#pragma message "Warning: the macOS support is experimental and might not be maintained"
+#endif
 	// A.K. begin
 	// initializing log
 	auto logWorkerPtr = g3::LogWorker::createLogWorker();
