@@ -16,8 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-// A.K. begin
-/*
 #include "log.h"
 #include <iomanip>
 #include <ctime>
@@ -130,5 +128,5 @@ std::ostream& operator<< (std::ostream& os, const LogPriority& log_priority)
 	static_cast<Log*>(os.rdbuf())->priority_ = log_priority;
 	return os;
 }
-*/
-// A.K. end
+
+

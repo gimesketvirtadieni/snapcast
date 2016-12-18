@@ -26,9 +26,6 @@
 #ifdef HAS_ALSA
 #include "player/alsaPlayer.h"
 #endif
-#ifdef HAS_AVAHI
-#include "browseAvahi.h"
-#endif
 #ifdef HAS_DAEMON
 #include "common/daemon.h"
 #endif
@@ -111,7 +108,7 @@ int main (int argc, char **argv)
 		string soundcard("default");
 		string host("");
 		size_t port(1704);
-		size_t latency(0);
+		int latency(0);
 		int processPriority(-3);
 
 		Switch helpSwitch("", "help", "produce help message");
@@ -121,16 +118,20 @@ int main (int argc, char **argv)
 		Value<size_t> portValue("p", "port", "server port", 1704, &port);
 		Value<string> soundcardValue("s", "soundcard", "index or name of the soundcard", "default", &soundcard);
 		Implicit<int> daemonOption("d", "daemon", "daemonize, optional process priority [-20..19]", -3, &processPriority);
-		Value<size_t> latencyValue("", "latency", "latency of the soundcard", 0, &latency);
+		Value<int> latencyValue("", "latency", "latency of the soundcard", 0, &latency);
 
 		OptionParser op("Allowed options");
 		op.add(helpSwitch)
 		 .add(versionSwitch)
-		 .add(listSwitch)
 		 .add(hostValue)
 		 .add(portValue)
+#if defined(HAS_ALSA)
+		 .add(listSwitch)
 		 .add(soundcardValue)
+#endif
+#ifdef HAS_DAEMON
 		 .add(daemonOption)
+#endif
 		 .add(latencyValue);
 
 		try
@@ -220,22 +221,24 @@ int main (int argc, char **argv)
 		// A.K. end
 
 		PcmDevice pcmDevice = getPcmDevice(soundcard);
+#if defined(HAS_ALSA)
 		if (pcmDevice.idx == -1)
 		{
 			cout << "soundcard \"" << soundcard << "\" not found\n";
 //			exit(EXIT_FAILURE);
 		}
+#endif
 
 		if (host.empty())
 		{
-#ifdef HAS_AVAHI
-			BrowseAvahi browseAvahi;
-			AvahiResult avahiResult;
+#if defined(HAS_AVAHI) || defined(HAS_BONJOUR)
+			BrowseZeroConf browser;
+			mDNSResult avahiResult;
 			while (!g_terminated)
 			{
 				try
 				{
-					if (browseAvahi.browse("_snapcast._tcp", AVAHI_PROTO_INET, avahiResult, 5000))
+					if (browser.browse("_snapcast._tcp", avahiResult, 5000))
 					{
 						host = avahiResult.ip_;
 						port = avahiResult.port_;
