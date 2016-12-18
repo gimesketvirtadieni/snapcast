@@ -247,7 +247,7 @@ int main (int argc, char **argv)
 				{
 					logS(kLogErr) << "Exception: " << e.what() << std::endl;
 				}
-				usleep(500*1000);
+				chronos::sleep(500);
 			}
 #endif
 		}
@@ -258,7 +258,7 @@ int main (int argc, char **argv)
 			logO << "Latency: " << latency << "\n";
 			controller->start(pcmDevice, host, port, latency);
 			while(!g_terminated)
-				usleep(100*1000);
+				chronos::sleep(100);
 			controller->stop();
 		}
 

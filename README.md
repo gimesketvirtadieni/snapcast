@@ -95,6 +95,10 @@ There is an Android client available in [Releases](https://github.com/badaix/sna
 
 ![Snapcast for Android](https://raw.githubusercontent.com/badaix/snapcast/master/doc/snapcast_android_scaled.png)
 
+There is also an unofficial WebApp from @atoomic [atoomic/snapcast-volume-ui](https://github.com/atoomic/snapcast-volume-ui).
+This app list all clients connected to a server and allow to control individualy the volume of each client.
+Once installed, you can use any mobile device, laptop, desktop, or browser.
+
 Setup of audio players/server
 -----------------------------
 Snapcast can be used with a number of different audio players and servers, and so it can be integrated into your favorite audio-player solution and make it synced-multiroom capable.
@@ -105,22 +109,28 @@ The goal is to build the following chain:
     audio player software -> snapfifo -> snapserver -> network -> snapclient -> alsa
 
 This [guide](doc/player_setup.md) shows how to configure different players/audio sources to redirect their audio signal into the Snapserver's fifo:
-* [MPD](doc/player_setup.md#mpd-setup)
-* [Mopidy](doc/player_setup.md#mopidy-setup)
-* [MPlayer](doc/player_setup.md#mplayer-setup)
-* [Alsa](doc/player_setup.md#alsa-setup)
-* [PulseAudio](doc/player_setup.md#pulseaudio-setup)
+* [MPD](doc/player_setup.md#mpd)
+* [Mopidy](doc/player_setup.md#mopidy)
+* [FFmpeg](doc/player_setup.md#ffmpeg)
+* [mpv](doc/player_setup.md#mpv)
+* [MPlayer](doc/player_setup.md#mplayer)
+* [Alsa](doc/player_setup.md#alsa)
+* [PulseAudio](doc/player_setup.md#pulseaudio)
+* [AirPlay](doc/player_setup.md#airplay)
+* [Spotify](doc/player_setup.md#spotify)
+* [Process](doc/player_setup.md#process)
 
 Roadmap
 -------
 Unordered list of features that should make it into the v1.0
 - [X] **Remote control** JSON-RPC API to change client latency, volume, zone, ...
 - [X] **Android client** JSON-RPC client and Snapclient
-- [X] **Zones** Support multiple streams
+- [X] **Streams** Support multiple streams
 - [X] **Debian packages** prebuild deb packages
 - [X] **Endian** independent code
 - [X] **OpenWrt** port Snapclient to OpenWrt
 - [X] **Hi-Res audio** support (like 192kHz 24bit)
+- [ ] **Groups** support multiple Groups of clients ("Zones")
 - [ ] **JSON-RPC** Possibility to add, remove, rename streams
 - [ ] **Protocol specification** Snapcast binary streaming protocol, JSON-RPC protocol
 - [ ] **Ports** Snapclient for Windows, Mac OS X, ...
