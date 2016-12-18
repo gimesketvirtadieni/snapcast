@@ -25,6 +25,23 @@
 #include <cstring>
 #include <sstream>
 
+
+// A.K. begin
+#include <g3log/g3log.hpp>
+#include <g3log/loglevels.hpp>
+
+// introducing ERROR level
+const LEVELS ERROR {WARNING.value + 1, {"ERROR"}};
+
+#define kLogErr    ERROR
+#define kLogNotice INFO
+
+#define logD       LOG(DEBUG)
+#define logO       LOG(INFO)
+#define logE       LOG(ERROR)
+#define logState   LOG(INFO)  // ???
+#define logS(P)    LOG(P)
+/*
 #define logD std::clog << kDbg
 #define logO std::clog << kOut
 #define logE std::clog << kErr
@@ -65,6 +82,8 @@ private:
 	LogPriority priority_;
 	char ident_[50];
 };
+*/
+// A.K. end
 
 
 #endif
