@@ -23,6 +23,13 @@
 #include "common/log.h"
 #include "timeProvider.h"
 
+// A.K. begin
+#include "common/cli.h"
+#include "cli/Command.h"
+#include "cli/Session.h"
+#include "cli/Socket.h"
+// A.K. end
+
 using namespace std;
 //using namespace chronos;
 namespace cs = chronos;
@@ -43,6 +50,29 @@ Stream::Stream(const SampleFormat& sampleFormat) : format_(sampleFormat), sleep_
 x = 1,000016667 / (1,000016667 - 1)
 */
 	setRealSampleRate(format_.rate);
+
+	cli::addAction(
+		"stream",
+		"show",
+		[this](Command* commandPtr, std::shared_ptr<std::vector<std::string>>)
+		{
+			auto stopping = false;
+
+			// TODO: this is very dangerous, refactoring is required:
+			commandPtr->setCancelHandler([&](Command* commandPtr)
+			{
+				stopping = true;
+			});
+
+			// waiting for stop signal
+			for (int i = 0; !stopping; i++)
+			{
+				commandPtr->getSession()->getSocket()->send("hello from stream");
+				commandPtr->getSession()->getSocket()->sendEndOfLine();
+				usleep(100000);
+			}
+		}
+	);
 }
 
 

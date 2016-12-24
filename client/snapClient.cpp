@@ -33,9 +33,7 @@
 
 
 // A.K. begin
-#include <cli/Actions.h>
-#include <cli/Server.h>
-#include <conwrap/ProcessorAsio.hpp>
+#include "common/cli.h"
 #include <g3log/logworker.hpp>
 #include <log/ConsoleSink.h>
 #include <log/FileSink.h>
@@ -198,26 +196,15 @@ int main (int argc, char **argv)
 		}
 
 		// A.K. begin
-		// creating CLI actions container
-		auto actionsPtr = std::make_unique<Actions>();
-
-		// registering default actions
-		actionsPtr->addDefaultCLIActions();
-		actionsPtr->addDefaultLogActions();
+		// initializing CLI server
+		// TODO: port number should be derived from the settings
+		cli::initializeCLIServer(15673, 2, logWorkerPtr.get());
 
 		// registering custom CLI actions
 		// ...
 
-		// creating CLI server
-		// TODO: port number should be derived from the settings
-		auto processorPtr = std::make_unique<conwrap::ProcessorAsio<Server>>(15673, 2, logWorkerPtr.get(), std::move(actionsPtr));
-
 		// starting CLI server
-		processorPtr->process(
-			[](auto context) {
-				context.getResource()->start();
-			}
-		);
+		cli::startCLIServer();
 		// A.K. end
 
 		PcmDevice pcmDevice = getPcmDevice(soundcard);
@@ -267,14 +254,7 @@ int main (int argc, char **argv)
 
 		// A.K. begin
 	    // stoping CLI server
-		processorPtr->process(
-			[](auto context) {
-				context.getResource()->stop();
-			}
-		);
-
-		// destroying concurrent wrapper which will wait for all pending async operations
-		processorPtr.reset();
+		cli::stopCLIServer();
 		// A.K. end
 	}
 	catch (const std::exception& e)
