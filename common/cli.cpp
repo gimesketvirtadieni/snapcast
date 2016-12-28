@@ -27,7 +27,7 @@ namespace cli
 	{
 		// TODO: lock
 		// TODO: only once
-		internal::processorCLIServer = std::make_unique<conwrap::ProcessorAsio<Server>>(15673, 2, logWorkerPtr);
+		internal::processorCLIServer = std::make_unique<conwrap::ProcessorAsio<Server>>(port, maxConnections, logWorkerPtr);
 
 		// registering default actions
 		auto actions = getCLIServer().getActions();
