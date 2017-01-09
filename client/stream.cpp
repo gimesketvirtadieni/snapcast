@@ -28,6 +28,7 @@
 #include "cli/Command.h"
 #include "cli/Session.h"
 #include "cli/Socket.h"
+#include <string>
 // A.K. end
 
 using namespace std;
@@ -67,9 +68,10 @@ x = 1,000016667 / (1,000016667 - 1)
 			// waiting for stop signal
 			for (int i = 0; !stopping; i++)
 			{
-				commandPtr->getSession()->getSocket()->send("hello from stream");
+				commandPtr->getSession()->getSocket()->send("chunks in queue = ");
+				commandPtr->getSession()->getSocket()->send(std::to_string(chunks_.size()).c_str());
 				commandPtr->getSession()->getSocket()->sendEndOfLine();
-				usleep(100000);
+				usleep(1000000);
 			}
 		}
 	);

@@ -1,5 +1,6 @@
 #include "cli.h"
 #include <cli/Actions.h>
+#include "common/log.h"
 
 
 namespace cli
@@ -11,9 +12,12 @@ namespace cli
 	}
 
 
-    void addAction(const char*, const char*, ActionHandler)
+    void addAction(const char* category, const char* name, ActionHandler actionHandler)
     {
-    	// TODO:...
+		if (internal::processorCLIServer)
+		{
+			internal::processorCLIServer->getResource()->getActions()->addAction({category, name, actionHandler});
+		}
     }
 
 
@@ -26,37 +30,45 @@ namespace cli
 	void initializeCLIServer(unsigned int port, unsigned int maxConnections, g3::LogWorker *logWorkerPtr)
 	{
 		// TODO: lock
-		// TODO: only once
-		internal::processorCLIServer = std::make_unique<conwrap::ProcessorAsio<Server>>(port, maxConnections, logWorkerPtr);
+		if (!internal::processorCLIServer)
+		{
+			internal::processorCLIServer = std::make_unique<conwrap::ProcessorAsio<Server>>(port, maxConnections, logWorkerPtr);
 
-		// registering default actions
-		auto actions = getCLIServer().getActions();
-		actions.addDefaultCLIActions();
-		actions.addDefaultLogActions();
+			// registering default actions
+			auto actionsPtr = getCLIServer().getActions();
+			actionsPtr->addDefaultCLIActions();
+			actionsPtr->addDefaultLogActions();
+		}
 	}
 
 
 	void startCLIServer()
 	{
-		// starting CLI server on its separate thread
-		internal::processorCLIServer->process(
-			[](auto context) {
-				context.getResource()->start();
-			}
-		);
+		if (internal::processorCLIServer)
+		{
+			// starting CLI server on its separate thread
+			internal::processorCLIServer->process(
+				[](auto context) {
+					context.getResource()->start();
+				}
+			);
+		}
 	}
 
 
 	void stopCLIServer()
 	{
-		// stopping CLI server
-		internal::processorCLIServer->process(
-			[](auto context) {
-				context.getResource()->stop();
-			}
-		);
+		if (internal::processorCLIServer)
+		{
+			// stopping CLI server
+			internal::processorCLIServer->process(
+				[](auto context) {
+					context.getResource()->stop();
+				}
+			);
 
-		// deleting CLI server; it will wait for all tasks to complete
-		internal::processorCLIServer.reset();
+			// deleting CLI server; it will wait for all tasks to complete
+			internal::processorCLIServer.reset();
+		}
 	}
 }

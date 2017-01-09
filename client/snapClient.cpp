@@ -266,7 +266,12 @@ int main (int argc, char **argv)
 #ifdef HAS_DAEMON
 	daemonShutdown();
 #endif
-	exit(EXIT_SUCCESS);
+
+	// A.K. begin
+	// return statement should be used instead of exit as it will ensures all destructors do a clean-up
+	return(EXIT_SUCCESS);
+	//exit(EXIT_SUCCESS);
+	// A.K. end
 }
 
 
