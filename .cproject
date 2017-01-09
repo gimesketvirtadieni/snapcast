@@ -34,6 +34,7 @@
 								<option id="gnu.cpp.compiler.option.preprocessor.def.802560558" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="HAS_ALSA"/>
 									<listOptionValue builtIn="false" value="VERSION='&quot;0.10.0&quot;'"/>
+									<listOptionValue builtIn="false" value="ASIO_STANDALONE"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.330594700" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -Wno-reorder -Wno-unused " valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1664307231" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
