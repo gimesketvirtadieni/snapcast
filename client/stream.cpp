@@ -25,9 +25,6 @@
 
 // A.K. begin
 #include "common/cli.h"
-#include "cli/Command.h"
-#include "cli/Session.h"
-#include "cli/Socket.h"
 #include <string>
 // A.K. end
 
@@ -52,15 +49,16 @@ x = 1,000016667 / (1,000016667 - 1)
 */
 	setRealSampleRate(format_.rate);
 
+	// A.K. begin
 	cli::addAction(
 		"stream",
 		"show",
-		[this](Command* commandPtr, std::shared_ptr<std::vector<std::string>>)
+		[this](auto& context)
 		{
 			auto stopping = false;
 
 			// TODO: this is very dangerous, refactoring is required:
-			commandPtr->setCancelHandler([&](Command* commandPtr)
+			context.setCancelHandler([&]
 			{
 				stopping = true;
 			});
@@ -68,13 +66,12 @@ x = 1,000016667 / (1,000016667 - 1)
 			// waiting for stop signal
 			for (int i = 0; !stopping; i++)
 			{
-				commandPtr->getSession()->getSocket()->send("chunks in queue = ");
-				commandPtr->getSession()->getSocket()->send(std::to_string(chunks_.size()).c_str());
-				commandPtr->getSession()->getSocket()->sendEndOfLine();
+				context.getOutput() << "chunks in queue = " << chunks_.size() << cli::Messages::endOfLine;
 				usleep(1000000);
 			}
 		}
 	);
+	// A.K. end
 }
 
 

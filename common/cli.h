@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cli/Action.h>
+#include <cli/Context.h>
+#include <cli/Messages.h>
 #include <cli/Server.h>
 #include <conwrap/ProcessorAsio.hpp>
 #include <g3log/logworker.hpp>
