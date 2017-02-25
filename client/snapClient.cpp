@@ -33,7 +33,7 @@
 
 
 // A.K. begin
-#include "common/cli.h"
+#include "cli/cli.h"
 #include <g3log/logworker.hpp>
 #include <log/ConsoleSink.h>
 #include <log/FileSink.h>
@@ -89,7 +89,7 @@ int main (int argc, char **argv)
 		auto filter = false;
 
 		// filtering one noicy line
-		if (logMessage._level == DEBUG && !logMessage._file.compare("alsaPlayer.cpp") && logMessage._line == 243) {
+		if (logMessage._level == DEBUG && !logMessage._file.compare("alsaPlayer.cpp") && logMessage._line == 245) {
 			filter = true;
 		}
 

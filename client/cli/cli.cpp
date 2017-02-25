@@ -1,5 +1,5 @@
-#include "cli.h"
 #include <cli/Actions.h>
+#include "cli/cli.h"
 #include "common/log.h"
 
 
@@ -12,11 +12,11 @@ namespace cli
 	}
 
 
-    void addAction(const char* category, const char* name, ActionHandler actionHandler)
+    void addAction(std::string categoryName, std::string actionName, std::function<void(Context&)> action)
     {
 		if (internal::processorCLIServer)
 		{
-			internal::processorCLIServer->getResource()->getActions()->addAction({category, name, actionHandler});
+			internal::processorCLIServer->getResource()->getActions()->addAction(categoryName, actionName, action);
 		}
     }
 
@@ -38,6 +38,9 @@ namespace cli
 			auto actionsPtr = getCLIServer().getActions();
 			actionsPtr->addDefaultCLIActions();
 			actionsPtr->addDefaultLogActions();
+
+			// registering SnapCast actions
+			//actionsPtr->addAction(...Action());
 		}
 	}
 
