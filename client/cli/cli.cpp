@@ -1,3 +1,4 @@
+#include <cli/Action.h>
 #include <cli/Actions.h>
 #include "cli/cli.h"
 #include "common/log.h"
@@ -16,7 +17,7 @@ namespace cli
     {
 		if (internal::processorCLIServer)
 		{
-			internal::processorCLIServer->getResource()->getActions()->addAction(categoryName, actionName, action);
+			internal::processorCLIServer->getResource()->getActions()->addAction(Action(categoryName, actionName, action));
 		}
     }
 
